@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>Enemies</title>
+  </head>
+  <body>
+    <h2>Blob</h2>
+    <svg width="50%" height="50%" viewbox="0 0 50 50">
+      <defs>
+        <radialGradient id="grad1" cx="25%" cy="15%" r="75%" fx="30%" fy="20%">
+          <stop offset="0%" style="stop-color:white;stop-opacity:0" />
+          <stop offset="100%" style="stop-color:midnightblue;stop-opacity:1" />
+        </radialGradient>
+      </defs>
+      <path d="M 25,50 Q 0,50 0,35 Q 0,25 15,20 Q 25,15 25,0 Q 25,15 35,20 Q 50,25 50,35 Q 50,50 25,50 z" fill="url(#grad1)" stroke="black"/>
+      <circle cx="17" cy="30" r="4" fill="black" stroke="white" stroke-width="3"/>
+      <circle cx="33" cy="30" r="4" fill="black" stroke="white" stroke-width="3"/>
+      <path d="M 13,40 Q 12,36 17,40 Q 25,45 33,40 Q 38,36 37,40 Q 25,50 13,40 z" fill="red" stroke="none"/>
+    </svg>
+    <h2>Ghost</h2>
+    <svg width="100%" height="100%" viewbox="0 0 375 375">
+      <defs>
+        <radialGradient id="grad2" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+          <stop offset="0%" style="stop-color:white;stop-opacity:0" />
+          <stop offset="100%" style="stop-color:midnightblue;stop-opacity:1" />
+        </radialGradient>
+        <image id="knight" xlink:href="Dw_armoredknight.gif" width="96" height="102"/>
+        <image id="dragon" xlink:href="Dw_bluedragon.gif" width="96" height="96"/>
+        <image id="ghost" xlink:href="Dw_ghost.gif" width="64" height="72"/>
+        <image id="scorpion" xlink:href="Dw_metalscorpion.gif" width="80" height="82"/>
+        <image id="golem" xlink:href="Dw_stoneman.gif" width="104" height="112"/>
+        <image id="wizard" xlink:href="Dw_wizard.gif" width="92" height="80"/>
+        <image id="wolf" xlink:href="Dw_wolf.gif" width="106" height="92"/>
+        <image id="wraith" xlink:href="Dw_wraithknight.gif" width="78" height="96"/>
+      </defs>
+      <rect width="375" height="375" fill="url(#grad2)"/>
+      <use xlink:href="#knight"/>
+      <use xlink:href="#dragon" x="125"/>
+      <use xlink:href="#ghost" x="250"/>
+      <use xlink:href="#scorpion" y="125"/>
+      <use xlink:href="#golem" x="250" y="125"/>
+      <use xlink:href="#wizard" y="250"/>
+      <use xlink:href="#wolf" x="125" y="250"/>
+      <use xlink:href="#wraith" x="250" y="250"/>
+    </svg>
+  </body>
+</html>

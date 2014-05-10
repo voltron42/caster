@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html ng-app="mazeApp">
+    <head>
+        <title>3D Maze</title>
+        <link rel="stylesheet" href="https://raw.github.com/angular/angular-phonecat/master/app/css/bootstrap.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+        <style>
+            text {
+                font-size: 3.25em;
+            }
+        </style>
+        <script>
+            angular.module('mazeApp', []).controller('MazeCtrl', function(maze){
+                var leftDir = function(dir) {
+                    return (dir+3)%4;
+                }
+                var rightDir = function(dir) {
+                    return (dir+1)%4;
+                }
+                return function($scope){
+                    $scope.directions = ['north','east','south','west'];
+                    $scope.move = {
+                        stepLeft:function() {
+                            $scope.step = maze[$scope.step.left];
+                            $scope.directionIndex = leftDir($scope.directionIndex);
+                        },
+                        stepForward:function() {
+                            $scope.step = maze[$scope.step.forward];
+                        },
+                        stepRight:function() {
+                            $scope.step = maze[$scope.step.right];
+                            $scope.directionIndex = rightDir($scope.directionIndex);
+                        }
+                    };
+                    $scope.has = {
+                        down:function() {
+                            return typeof $scope.step.down == "number";
+                        },
+                        left:function(){
+                            return typeof $scope.step.left == "number";
+                        },
+                        right:function(){
+                            return typeof $scope.step.right == "number";
+                        },
+                        forward:function(){
+                            return typeof $scope.step.forward == "number";
+                        }
+                    };
+                    $scope.getFillColor = {
+                        left:function() {
+                            return {
+                                fill:"url(#" + $scope.directions[leftDir($scope.directionIndex)] + ")"
+                            };
+                        },
+                        forward:function() {
+                            return {
+                                fill:"url(#" + $scope.directions[$scope.directionIndex] + ")"
+                            };
+                        },
+                        right:function() {
+                            return {
+                                fill:"url(#" + $scope.directions[rightDir($scope.directionIndex)] + ")"
+                            };
+                        }
+                    };
+                    $scope.reset = function() {
+                        $scope.step = maze[6];
+                        $scope.directionIndex = 0;
+                    }
+                    $scope.currentDirection = function(index) {
+                        return "<h2>hi</h2>";
+                    };
+                    $scope.reset();
+                };
+            }([{
+                right:0,
+                left:6
+            },{
+                left:2
+            },{
+                forward:3,
+                right:4
+            },{
+                right:1
+            },{
+                left:5,
+                forward:0
+            },{
+                forward:3
+            },{
+                forward:2,
+                right:3,
+                left:5
+            }]));
+        </script>
+    </head>
+    <body ng-controller="MazeCtrl">
+        <h2>Maze</h2>
+        <div class="maze">
+            <svg width="600" height="400">
+                <defs>
+                    <linearGradient id="floor" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:darkgray;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="ceiling" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:lightgray;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="west" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:purple;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="east" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:red;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="north" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:blue;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="south" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:green;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect width="600" height="400" fill="none" stroke="black" stroke-width="1"/>
+                <polygon points="0,0 100,100 100,300 0,400" stroke="black" stroke-width="1" ng-style="getFillColor.left()"/>
+                <polygon points="0,0 100,100 500,100 600,0" fill="url(#ceiling)" stroke="black" stroke-width="1"/>
+                <polygon points="0,400 100,300 500,300 600,400" stroke="black" stroke-width="1" fill="url(#floor)"/>
+                <polygon points="600,0 500,100 500,300 600,400" stroke="black" stroke-width="1" ng-style="getFillColor.right()"/>
+                <rect x="50" y="50" width="500" height="300" fill="none" stroke="black" stroke-width="1"/>
+                <rect x="100" y="100" width="400" height="200" stroke="black" stroke-width="1" ng-style="getFillColor.forward()"/>
+                <g ng-if="has.left()">
+                    <polygon points="50,100 50,50 100,100" fill="url(#ceiling)" stroke="black" stroke-width="1"/>
+                    <polygon points="50,300 50,350 100,300" fill="url(#floor)" stroke="black" stroke-width="1"/>
+                    <rect x="50" y="100" width="50" height="200" stroke="black" stroke-width="1" ng-style="getFillColor.forward()"/>
+                </g>
+                <g ng-if="has.right()">
+                    <polygon points="550,100 550,50 500,100" fill="url(#ceiling)" stroke="black" stroke-width="1"/>
+                    <polygon points="550,300 550,350 500,300" fill="url(#floor)" stroke="black" stroke-width="1"/>
+                    <rect x="500" y="100" width="50" height="200" stroke="black" stroke-width="1" ng-style="getFillColor.forward()"/>
+                </g>
+                <g ng-if="has.forward()">
+                    <polygon points="100,100 150,150 150,250 100,300" stroke="black" stroke-width="1" ng-style="getFillColor.left()"/>
+                    <polygon points="100,100 150,150 450,150 500,100" fill="url(#ceiling)" stroke="black" stroke-width="1"/>
+                    <polygon points="100,300 150,250 450,250 500,300" fill="url(#floor)" stroke="black" stroke-width="1"/>
+                    <polygon points="500,100 450,150  450,250 500,300" stroke="black" stroke-width="1" ng-style="getFillColor.right()"/>
+                    <rect x="150" y="150" width="300" height="100" stroke="black" stroke-width="1" ng-style="getFillColor.forward()"/>
+                </g>
+                <g ng-if="has.down()">
+                    <polygon points="175,305 150,345 450,345 425,305" stroke="black" stroke-width="1" ng-style="getFillColor.forward()"/>
+                    <polygon points="425,321 440,345 450,345 425,305" stroke="black" stroke-width="1" fill="url(#ceiling)"/>
+                    <polygon points="425,321 440,345 420,345 405,321" stroke="black" stroke-width="1" fill="url(#floor)"/>
+                    <polygon points="420,345 405,321 405,338 410,345" stroke="black" stroke-width="1" fill="url(#ceiling)"/>
+                    <polygon points="405,338 410,345 385,345 380,338" stroke="black" stroke-width="1" fill="url(#floor)"/>
+                    <polygon points="380,345 380,338 385,345" stroke="black" stroke-width="1" fill="url(#ceiling)"/>
+                </g>
+                <g ng-if="step.win">
+                    <text x="175" y="215" fill="black">YOU WIN!</text>
+                </g>
+                <g ng-if="step.lose">
+                    <text x="175" y="215" fill="black">YOU LOSE!</text>
+                </g>
+            </svg>
+        </div>
+        <div class="controls">
+            <p class="ng-bind-html: {{currentDirection()}}"></p>
+            <button ng-if="has.left()" ng-click="move.stepLeft()">&lt;&lt;&lt;</button>
+            <button ng-if="has.forward()" ng-click="move.stepForward()">^^^</button>
+            <button ng-if="has.right()" ng-click="move.stepRight()">&gt;&gt;&gt;</button>
+            <button ng-click="reset()">Reset</button>
+        </div>
+    </body>
+</html>
